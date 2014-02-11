@@ -23,3 +23,9 @@ elementAt list x = if x <= length list && x > 0
 myLength :: [a] -> Int
 myLength [] = 0
 myLength (_ : x) = 1 + myLength x
+
+
+-- 5. Reverse a list.
+myReverse :: [a] -> [a]
+myReverse [] = []
+myReverse (head : tail) = (myReverse tail) ++ [head]
