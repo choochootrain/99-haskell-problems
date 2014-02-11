@@ -17,3 +17,9 @@ elementAt :: [a] -> Int -> a
 elementAt list x = if x <= length list && x > 0
                       then list !! (x - 1)
                       else error "index out of bounds"
+
+
+-- 4. Find the number of elements of a list.
+myLength :: [a] -> Int
+myLength [] = 0
+myLength (_ : x) = 1 + myLength x
