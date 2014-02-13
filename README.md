@@ -7,3 +7,4 @@
 4. Find the number of elements of a list.
 5. Reverse a list.
 6. Find out whether a list is a palindrome. A palindrome can be read forward or backward.
+7. Flatten a nested list structure.
