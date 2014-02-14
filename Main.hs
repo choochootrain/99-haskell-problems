@@ -44,3 +44,9 @@ data NestedList a = Elem a | List [NestedList a]
 flatten :: NestedList a -> [a]
 flatten (Elem a) = [a]
 flatten (List x) = foldr ((++) . flatten) [] x
+
+
+-- 8. Eliminate consecutive duplicates of list elements.
+compress :: (Eq a) => [a] -> [a]
+compress [] = []
+compress x = foldr (\x y -> if length y >= 1 && x /= y !! 0 then [x] ++ y else y)[last x] $ init x
