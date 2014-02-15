@@ -50,3 +50,13 @@ flatten (List x) = foldr ((++) . flatten) [] x
 compress :: (Eq a) => [a] -> [a]
 compress [] = []
 compress x = foldr (\x y -> if length y >= 1 && x /= y !! 0 then [x] ++ y else y)[last x] $ init x
+
+-- 9. Pack consecutive duplicates of list elements into sublists.
+-- If a list contains repeated elements they should be placed in separate
+-- sublists.
+pack :: (Eq a) => [a] -> [[a]]
+pack [] = []
+pack x = foldr (\x y -> if x /= head y !! 0
+                          then [[x]] ++ y
+                          else ([(head y ++ [x])] ++ tail y))
+               [[last x]] $ init x
