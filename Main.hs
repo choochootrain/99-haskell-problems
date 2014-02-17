@@ -68,3 +68,16 @@ pack x = foldr (\x y -> if x /= head y !! 0
 -- duplicates of the element E.
 encode :: (Eq a) => [a] -> [(Int, a)]
 encode = (map (\x -> (length x, head x))) . pack
+
+
+-- 11. Modified run-length encoding. Modify the result of problem 10 in such a
+-- way that if an element has no duplicates it is simply copied into the result
+-- list. Only elements with duplicates are transferred as (N E) lists.
+data Encoding a = Single a
+                | Multiple Int a
+                deriving (Show)
+encodeElement :: [a] -> Encoding a
+encodeElement (x:[]) = Single x
+encodeElement x = Multiple (length x) (head x)
+encodeModified :: (Eq a) => [a] -> [Encoding a]
+encodeModified = (map encodeElement) . pack
