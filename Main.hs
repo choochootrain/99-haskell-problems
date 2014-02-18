@@ -81,3 +81,12 @@ encodeElement (x:[]) = Single x
 encodeElement x = Multiple (length x) (head x)
 encodeModified :: (Eq a) => [a] -> [Encoding a]
 encodeModified = (map encodeElement) . pack
+
+
+-- 12. Decode a run-length encoded list. Given a run-length code list generated
+-- as specified in problem 11. Construct its uncompressed version.
+decodeElement :: Encoding a -> [a]
+decodeElement (Single x) = [x]
+decodeElement (Multiple n x) = replicate n x
+decodeModified :: [Encoding a] -> [a]
+decodeModified = concatMap decodeElement
