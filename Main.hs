@@ -90,3 +90,19 @@ decodeElement (Single x) = [x]
 decodeElement (Multiple n x) = replicate n x
 decodeModified :: [Encoding a] -> [a]
 decodeModified = concatMap decodeElement
+
+-- 13. Run-length encoding of a list (direct solution). Implement the so-called
+-- run-length encoding data compression method directly. I.e. don't explicitly
+-- create the sublists containing the duplicates, as in problem 9, but only
+-- count them. As in problem P11, simplify the result list by replacing the
+-- singleton lists (1 X) by X.
+encodeDirect :: (Eq a) => [a] -> [Encoding a]
+encodeDirect = foldr encodeElementDirect []
+  where
+    encodeElementDirect x [] = [Single x]
+    encodeElementDirect x ((Single y):ys) = if x == y
+                                            then ((Multiple 2 y):ys)
+                                            else [Single x] ++ ((Single y):ys)
+    encodeElementDirect x ((Multiple n y):ys) = if x == y
+                                                then ((Multiple (n+1) y):ys)
+                                                else [Single x] ++ ((Multiple n y):ys)
