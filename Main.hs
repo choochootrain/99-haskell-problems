@@ -106,3 +106,8 @@ encodeDirect = foldr encodeElementDirect []
     encodeElementDirect x ((Multiple n y):ys) = if x == y
                                                 then ((Multiple (n+1) y):ys)
                                                 else [Single x] ++ ((Multiple n y):ys)
+
+
+-- 14. Duplicate the elements of a list.
+dupli :: [a] -> [a]
+dupli = concatMap $ take 2 . repeat
