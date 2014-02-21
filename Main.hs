@@ -111,3 +111,8 @@ encodeDirect = foldr encodeElementDirect []
 -- 14. Duplicate the elements of a list.
 dupli :: [a] -> [a]
 dupli = concatMap $ take 2 . repeat
+
+
+-- 15. Replicate the elements in a list a given number of times.
+repli :: [a] -> Int -> [a]
+repli x n = concatMap (replicate n) x
