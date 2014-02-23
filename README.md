@@ -17,3 +17,4 @@
 14. Duplicate the elements of a list.
 15. Replicate the elements in a list a given number of times.
 16. Drop every N'th element from a list.
+17. Split a list into two parts; the length of the first part is given. Do not use any defined predicates.

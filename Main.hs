@@ -123,3 +123,13 @@ dropEvery :: [a] -> Int -> [a]
 dropEvery x n
   | length x >= n = (take (n-1) x) ++ (dropEvery (drop n x) n)
   | otherwise     = x
+
+
+-- 17. Split a list into two parts; the length of the first part is given. Do not use any defined predicates.
+split :: [a] -> Int -> ([a], [a])
+split x n = tupleMap fst (filter before xi, filter after xi)
+  where
+    tupleMap f (t1, t2) = (map f t1, map f t2)
+    before = ((<n) . snd)
+    after = ((>=n) . snd)
+    xi = zip x [0..length x]
