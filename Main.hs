@@ -116,3 +116,10 @@ dupli = concatMap $ take 2 . repeat
 -- 15. Replicate the elements in a list a given number of times.
 repli :: [a] -> Int -> [a]
 repli x n = concatMap (replicate n) x
+
+
+-- 16. Drop every N'th element from a list.
+dropEvery :: [a] -> Int -> [a]
+dropEvery x n
+  | length x >= n = (take (n-1) x) ++ (dropEvery (drop n x) n)
+  | otherwise     = x
