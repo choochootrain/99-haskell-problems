@@ -140,3 +140,10 @@ split x n = tupleMap fst (filter before xi, filter after xi)
 -- list (both limits included). Start counting the elements with 1.
 slice :: [a] -> Int -> Int -> [a]
 slice x i j = snd $ split (fst $ split x $ j) $ i-1
+
+
+-- 19. Rotate a list N places to the left.
+rotate :: [a] -> Int -> [a]
+rotate x n
+  | n >= 0    = drop n x ++ take n x
+  | otherwise = rotate x (length x + n)
