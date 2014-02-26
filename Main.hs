@@ -147,3 +147,8 @@ rotate :: [a] -> Int -> [a]
 rotate x n
   | n >= 0    = drop n x ++ take n x
   | otherwise = rotate x (length x + n)
+
+
+-- 20. Remove the K'th element from a list.
+removeAt :: Int -> [a] -> (a, [a])
+removeAt i x = (x !! (i-1), map fst $ filter ((/=(i-1)) . snd) $ zip x [0..length x])
