@@ -161,3 +161,8 @@ insertAt x y n = before ++ [x] ++ after
     chunks = split y (n-1)
     before = fst chunks
     after  = snd chunks
+
+
+-- 22. Create a list containing all integers within a given range.
+range :: Int -> Int -> [Int]
+range x y = [x..y]
