@@ -21,3 +21,4 @@
 18. Extract a slice from a list. Given two indices, i and k, the slice is the list containing the elements between the i'th and k'th element of the original list (both limits included). Start counting the elements with 1.
 19. Rotate a list N places to the left.
 20. Remove the K'th element from a list.
+21. Insert an element at a given position into a list.

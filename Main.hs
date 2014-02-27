@@ -152,3 +152,12 @@ rotate x n
 -- 20. Remove the K'th element from a list.
 removeAt :: Int -> [a] -> (a, [a])
 removeAt i x = (x !! (i-1), map fst $ filter ((/=(i-1)) . snd) $ zip x [0..length x])
+
+
+-- 21. Insert an element at a given position into a list.
+insertAt :: a -> [a] -> Int -> [a]
+insertAt x y n = before ++ [x] ++ after
+  where
+    chunks = split y (n-1)
+    before = fst chunks
+    after  = snd chunks
