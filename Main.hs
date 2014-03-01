@@ -1,3 +1,8 @@
+import Data.List
+import System.Random (newStdGen, randomRs)
+import Control.Monad
+
+
 -- 1. Find the last element of a list.
 myLast :: [a] -> a
 myLast [] = error "list is empty"
@@ -166,3 +171,10 @@ insertAt x y n = before ++ [x] ++ after
 -- 22. Create a list containing all integers within a given range.
 range :: Int -> Int -> [Int]
 range x y = [x..y]
+
+
+-- 23. Extract a given number of randomly selected elements from a list.
+rndSelect :: [a] -> Int -> IO [a]
+rndSelect x n = do
+  gen <- newStdGen
+  return $ map (\i -> x !! i) $ take n $ randomRs (0, length x - 1) gen
