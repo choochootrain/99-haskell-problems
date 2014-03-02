@@ -178,3 +178,10 @@ rndSelect :: [a] -> Int -> IO [a]
 rndSelect x n = do
   gen <- newStdGen
   return $ map (\i -> x !! i) $ take n $ randomRs (0, length x - 1) gen
+
+
+-- 24. Lotto: Draw N different random numbers from the set 1..M.
+diffSelect :: Int -> Int -> IO [Int]
+diffSelect n m = do
+  gen <- newStdGen
+  return $ take n $ nub $ randomRs (1, m) gen
