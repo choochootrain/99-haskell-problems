@@ -1,5 +1,5 @@
 import Data.List
-import System.Random (newStdGen, randomRs)
+import System.Random (newStdGen, randomR, randomRs)
 import Control.Monad
 
 
@@ -185,3 +185,10 @@ diffSelect :: Int -> Int -> IO [Int]
 diffSelect n m = do
   gen <- newStdGen
   return $ take n $ nub $ randomRs (1, m) gen
+
+
+-- 25. Generate a random permutation of the elements of a list.
+rndPermutation :: [a] -> IO [a]
+rndPermutation x = do
+  gen <- newStdGen
+  return $ (permutations x) !! (fst $ randomR (0, product [1..length x] - 1) gen)
