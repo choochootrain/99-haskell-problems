@@ -192,3 +192,19 @@ rndPermutation :: [a] -> IO [a]
 rndPermutation x = do
   gen <- newStdGen
   return $ (permutations x) !! (fst $ randomR (0, product [1..length x] - 1) gen)
+
+
+-- 26. Generate the combinations of K distinct objects chosen from the N
+-- elements of a list. In how many ways can a committee of 3 be chosen from a
+-- group of 12 people? We all know that there are C(12,3) = 220 possibilities
+-- (C(N,K) denotes the well-known binomial coefficients). For pure
+-- mathematicians, this result may be great. But we want to really generate
+-- all the possibilities in a list.
+combinations :: Int -> [a] -> [[a]]
+combinations n x
+  | n == 1        = map (\y -> [y]) x
+  | length x == n = [x]
+  | otherwise     = firsts ++ others
+    where
+      firsts = map (\y -> [head x] ++ y) $ combinations (n-1) $ tail x
+      others = combinations n $ tail x
