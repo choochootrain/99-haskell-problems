@@ -208,3 +208,17 @@ combinations n x
     where
       firsts = map (\y -> [head x] ++ y) $ combinations (n-1) $ tail x
       others = combinations n $ tail x
+
+
+-- 27. Group the elements of a set into disjoint subsets.
+disjointGroups :: (Eq a) => [Int] -> [a] -> [[[a]]]
+disjointGroups [] _ = [[]]
+disjointGroups (n:ns) x = concatMap createGroup groups
+  where
+    splitGroups :: (Eq a) => Int -> [a] -> [([a], [a])]
+    splitGroups n x = zip combs $ map (\y -> x \\ y) combs
+      where
+        combs = combinations n x
+    groups = splitGroups n x
+    createGroup :: (Eq a) => ([a], [a]) -> [[[a]]]
+    createGroup (x, y) = map (\z -> [x] ++ z) $ disjointGroups ns y
