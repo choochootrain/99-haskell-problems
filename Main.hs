@@ -1,4 +1,5 @@
 import Data.List
+import Data.Ord (comparing)
 import System.Random (newStdGen, randomR, randomRs)
 import Control.Monad
 
@@ -222,3 +223,17 @@ disjointGroups (n:ns) x = concatMap createGroup groups
     groups = splitGroups n x
     createGroup :: (Eq a) => ([a], [a]) -> [[[a]]]
     createGroup (x, y) = map (\z -> [x] ++ z) $ disjointGroups ns y
+
+
+-- 28. Sorting a list of lists according to length of sublists.
+lsort :: [[a]] -> [[a]]
+lsort = sortBy (comparing length)
+  where
+    compareLengths x y = compare (length x) (length y)
+lfsort :: [[a]] -> [[a]]
+lfsort x = map ((x !!) . fst) pairs
+  where
+    lengthFrequencies = map (occurrences x) $ map length x
+      where
+        occurrences x n = length $ filter (\y -> y == n) $ map length x
+    pairs = sortBy (comparing snd) $ zip [0..length x] lengthFrequencies
