@@ -237,3 +237,10 @@ lfsort x = map ((x !!) . fst) pairs
       where
         occurrences x n = length $ filter (\y -> y == n) $ map length x
     pairs = sortBy (comparing snd) $ zip [0..length x] lengthFrequencies
+
+
+-- 31. Determine whether a given integer number is prime.
+isPrime :: Int -> Bool
+isPrime n = numFactors == 2
+  where
+    numFactors = length $ filter (\x -> (n`mod`x == 0)) [1..n]
