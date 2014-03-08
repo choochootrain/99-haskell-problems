@@ -244,3 +244,15 @@ isPrime :: Int -> Bool
 isPrime n = numFactors == 2
   where
     numFactors = length $ filter (\x -> (n`mod`x == 0)) [1..n]
+
+
+-- 32. Determine the greatest common divisor of two positive integer numbers.
+-- Use Euclid's algorithm.
+myGCD :: Int -> Int -> Int
+myGCD n m = euclidsAlgorithm max min
+  where
+    max = maximum [n, m]
+    min = minimum [n, m]
+    euclidsAlgorithm a b
+      | b == 0    = abs a
+      | otherwise = euclidsAlgorithm b $ a `rem` b
