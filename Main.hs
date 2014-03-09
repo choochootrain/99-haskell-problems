@@ -262,3 +262,11 @@ myGCD n m = euclidsAlgorithm max min
 -- are coprime if their greatest common divisor equals 1.
 coprime :: Int -> Int -> Bool
 coprime m n = (myGCD m n) == 1
+
+
+-- 34. Calculate Euler's totient function phi(m). Euler's so-called totient
+-- function phi(m) is defined as the number of positive integers r (1 <= r < m)
+-- that are coprime to m.
+totient :: Int -> Int
+totient 1 = 1
+totient n = length $ filter (coprime n) [1..n-1]
