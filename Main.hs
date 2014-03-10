@@ -294,3 +294,9 @@ betterTotient :: Int -> Int
 betterTotient n = foldr (*) 1 $ map product $ primeFactorsMult n
   where
     product (p, m) = (p - 1) * p ^ (m - 1)
+
+
+-- 39. A list of prime numbers. Given a range of integers by its lower and
+-- upper limit, construct a list of all prime numbers in that range.
+primesR :: Int -> Int -> [Int]
+primesR n m = filter isPrime [n..m]
