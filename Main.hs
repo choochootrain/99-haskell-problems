@@ -316,3 +316,14 @@ goldbach n = (a, b)
     rems = filter pair [2..n-2]
     a = head rems
     b = n - a
+
+
+-- 41. Given a range of integers by its lower and upper limit, print a list of
+-- all even numbers and their Goldbach composition. In most cases, if an even
+-- number is written as the sum of two prime numbers, one of them is very
+-- small. Very rarely, the primes are both bigger than say 50. Try to find out
+-- how many such cases there are in the range 2..3000.
+goldbachList :: Int -> Int -> Int -> [(Int, Int)]
+goldbachList n m d = filter ((>d) . fst) rems
+  where
+    rems = map goldbach [x | x <- [n..m], x `mod` 2 == 0, x > 2]
