@@ -34,3 +34,4 @@
 33. Determine whether two positive integer numbers are coprime. Two numbers are coprime if their greatest common divisor equals 1.
 34. Calculate Euler's totient function phi(m). Euler's so-called totient function phi(m) is defined as the number of positive integers r (1 <= r < m) that are coprime to m. 
 35. Determine the prime factors of a given positive integer. Construct a flat list containing the prime factors in ascending order.
+36. Determine the prime factors of a given positive integer. Construct a list containing the prime factors and their multiplicity.

@@ -279,3 +279,11 @@ primeFactors 1 = []
 primeFactors n = [factor] ++ (primeFactors $ n `quot` factor)
   where
     factor = head $ filter (not . (coprime n)) [2..n]
+
+
+-- 36. Determine the prime factors of a given positive integer. Construct a
+-- list containing the prime factors and their multiplicity.
+primeFactorsMult :: Int -> [(Int, Int)]
+primeFactorsMult = map multiplicity . group . primeFactors
+  where
+    multiplicity x = (head x, length x)
