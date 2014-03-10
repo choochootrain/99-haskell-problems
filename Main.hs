@@ -270,3 +270,12 @@ coprime m n = (myGCD m n) == 1
 totient :: Int -> Int
 totient 1 = 1
 totient n = length $ filter (coprime n) [1..n-1]
+
+
+-- 35. Determine the prime factors of a given positive integer. Construct a
+-- flat list containing the prime factors in ascending order.
+primeFactors :: Int -> [Int]
+primeFactors 1 = []
+primeFactors n = [factor] ++ (primeFactors $ n `quot` factor)
+  where
+    factor = head $ filter (not . (coprime n)) [2..n]
