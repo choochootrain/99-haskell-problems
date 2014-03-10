@@ -287,3 +287,10 @@ primeFactorsMult :: Int -> [(Int, Int)]
 primeFactorsMult = map multiplicity . group . primeFactors
   where
     multiplicity x = (head x, length x)
+
+
+-- 37. Calculate Euler's totient function phi(m) (improved).
+betterTotient :: Int -> Int
+betterTotient n = foldr (*) 1 $ map product $ primeFactorsMult n
+  where
+    product (p, m) = (p - 1) * p ^ (m - 1)
