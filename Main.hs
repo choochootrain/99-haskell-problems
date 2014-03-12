@@ -327,3 +327,32 @@ goldbachList :: Int -> Int -> Int -> [(Int, Int)]
 goldbachList n m d = filter ((>d) . fst) rems
   where
     rems = map goldbach [x | x <- [n..m], x `mod` 2 == 0, x > 2]
+
+
+-- 46. Define predicates and/2, or/2, nand/2, nor/2, xor/2, impl/2 and equ/2
+-- (for logical equivalence) which succeed or fail according to the result of
+-- their respective operations; e.g. and(A,B) will succeed, if and only if both
+-- A and B succeed. A logical expression in two variables can then be written
+-- as in the following example: and(or(A,B),nand(A,B)). Now, write a predicate
+-- table/3 which prints the truth table of a given logical expression in two
+-- variables.
+and' :: Bool -> Bool -> Bool
+and' a b = a && b
+or' :: Bool -> Bool -> Bool
+or' a b = a || b
+nand' :: Bool -> Bool -> Bool
+nand' a b = not $ and' a b
+nor' :: Bool -> Bool -> Bool
+nor' a b = not $ or' a b
+xor' :: Bool -> Bool -> Bool
+xor' a b = or' (and' a $ not b) (and' (not a) b)
+impl' :: Bool -> Bool -> Bool
+impl' a b = not $ and' a $ not b
+equ' :: Bool -> Bool -> Bool
+equ' a b = a == b
+
+table :: (Bool -> Bool -> Bool) -> [(Bool, Bool, Bool)]
+table f = map combine $ zip enumeration $ map (uncurry f) enumeration
+  where
+    combine ((a, b), c) = (a, b, c)
+    enumeration = [(True, True), (True, False), (False, True), (False, False)]
