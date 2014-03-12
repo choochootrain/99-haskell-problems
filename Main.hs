@@ -367,3 +367,20 @@ table f = map combine $ zip enumeration $ map (uncurry f) enumeration
 infixl 9 `not'`
 infixl 8 `and'`
 infixl 7 `or'`
+
+
+-- 48. Truth tables for logical expressions (3). Generalize problem P47 in such
+-- a way that the logical expression may contain any number of logical
+-- variables. Define table/2 in a way that table(List,Expr) prints the truth
+-- table for the expression Expr, which contains the logical variables
+-- enumerated in List.
+tablen :: Int -> ([Bool] -> Bool) -> IO ()
+tablen n f = mapM_ putStrLn $ map (concatMap ((" " ++) . show)) results
+  where
+    results = map combine $ zip enumeration $ map f enumeration
+    combine (a, b) = a ++ [b]
+    enumeration = enumerate n
+    enumerate 1 = [[True], [False]]
+    enumerate n = (map (True:) prev) ++ (map (False:) prev)
+      where
+        prev = enumerate (n-1)
