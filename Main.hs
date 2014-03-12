@@ -336,6 +336,8 @@ goldbachList n m d = filter ((>d) . fst) rems
 -- as in the following example: and(or(A,B),nand(A,B)). Now, write a predicate
 -- table/3 which prints the truth table of a given logical expression in two
 -- variables.
+not' :: Bool -> Bool
+not' = not
 and' :: Bool -> Bool -> Bool
 and' a b = a && b
 or' :: Bool -> Bool -> Bool
@@ -356,3 +358,12 @@ table f = map combine $ zip enumeration $ map (uncurry f) enumeration
   where
     combine ((a, b), c) = (a, b, c)
     enumeration = [(True, True), (True, False), (False, True), (False, False)]
+
+
+-- 47. Truth tables for logical expressions (2). Continue problem P46 by
+-- defining and/2, or/2, etc as being operators. This allows to write the
+-- logical expression in the more natural way, as in the example:
+-- A and (A or not B). Define operator precedence as usual; i.e. as in Java.
+infixl 9 `not'`
+infixl 8 `and'`
+infixl 7 `or'`
