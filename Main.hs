@@ -394,3 +394,38 @@ gray 1 = ["0", "1"]
 gray n = (map ("0"++) prev) ++ (map ("1"++) $ reverse prev)
   where
     prev = gray (n-1)
+
+
+-- 50. Huffman codes. We suppose a set of symbols with their frequencies,
+-- given as a list of fr(S,F) terms.
+-- Example: [fr(a,45),fr(b,13),fr(c,12),fr(d,16),fr(e,9),fr(f,5)]. Our
+-- objective is to construct a list hc(S,C) terms, where C is the Huffman code
+-- word for the symbol S. In our example, the result could be
+-- Hs = [hc(a,'0'), hc(b,'101'), hc(c,'100'), hc(d,'111'), hc(e,'1101'), hc(f,'1100')]
+-- [hc(a,'01'),...etc.].
+data PrefixTree = PrefixTree Int PrefixTree PrefixTree
+                | PrefixNode Int Char
+huffman :: [(Char, Int)] -> [(Char, [Char])]
+huffman fs = symbolize $ createPrefixTree fs
+  where
+    createPrefixTree :: [(Char, Int)] -> PrefixTree
+    createPrefixTree x = head $ concatPrefixTree $ map toPrefix x
+    symbolize :: PrefixTree -> [(Char, [Char])]
+    symbolize (PrefixTree _ a b) = (map (prepend "0") sa) ++ (map (prepend "1") sb)
+      where
+        prepend s (c, x) = (c, s ++ x)
+        sa = symbolize a
+        sb = symbolize b
+    symbolize (PrefixNode _ c) = [(c, "")]
+    prefixValue :: PrefixTree -> Int
+    prefixValue (PrefixTree a _ _) = a
+    prefixValue (PrefixNode a _) = a
+    toPrefix :: (Char, Int) -> PrefixTree
+    toPrefix (c, n) = PrefixNode n c
+    concatPrefixTree :: [PrefixTree] -> [PrefixTree]
+    concatPrefixTree (f:[]) = [f]
+    concatPrefixTree f = concatPrefixTree $ [combine (head s) (head $ tail s)] ++ drop 2 s
+      where
+        s = sortBy (comparing prefixValue) f
+        combine :: PrefixTree -> PrefixTree -> PrefixTree
+        combine a b = PrefixTree (prefixValue a + prefixValue b) a b
