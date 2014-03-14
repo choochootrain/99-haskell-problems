@@ -384,3 +384,13 @@ tablen n f = mapM_ putStrLn $ map (concatMap ((" " ++) . show)) results
     enumerate n = (map (True:) prev) ++ (map (False:) prev)
       where
         prev = enumerate (n-1)
+
+
+-- 49. Gray codes. An n-bit Gray code is a sequence of n-bit strings
+-- constructed according to certain rules. Find out the construction rules and
+-- write a predicate with the following specification.
+gray :: Int -> [[Char]]
+gray 1 = ["0", "1"]
+gray n = (map ("0"++) prev) ++ (map ("1"++) $ reverse prev)
+  where
+    prev = gray (n-1)
