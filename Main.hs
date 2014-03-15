@@ -429,3 +429,26 @@ huffman fs = symbolize $ createPrefixTree fs
         s = sortBy (comparing prefixValue) f
         combine :: PrefixTree -> PrefixTree -> PrefixTree
         combine a b = PrefixTree (prefixValue a + prefixValue b) a b
+
+
+-- 55. Construct completely balanced binary trees. In a completely balanced
+-- binary tree, the following property holds for every node: The number of
+-- nodes in its left subtree and the number of nodes in its right subtree are
+-- almost equal, which means their difference is not greater than one. Write a
+-- function cbal-tree to construct completely balanced binary trees for a given
+-- number of nodes. The predicate should generate all solutions via
+-- backtracking. Put the letter 'x' as information into all nodes of the tree.
+data Tree a = Empty
+            | Branch a (Tree a) (Tree a)
+            deriving (Show, Eq)
+leaf :: a -> Tree a
+leaf x = Branch x Empty Empty
+cbalTree :: Int -> [Tree Char]
+cbalTree 0 = [Empty]
+cbalTree 1 = [Branch 'x' Empty Empty]
+cbalTree n = [Branch 'x' b1 b2 | b1 <- t1, b2 <- t2] ++ [Branch 'x' b2 b1 | b1 <- t1, b2 <- t2]
+  where
+    n1 = (n-1) `quot` 2
+    n2 = (n-1) - n1
+    t1 = cbalTree n1
+    t2 = cbalTree n2
