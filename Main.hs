@@ -468,3 +468,15 @@ symmetric (Branch _ t1 t2) = mirror t1 t2
     mirror (Branch _ _ _) Empty = False
     mirror Empty (Branch _ _ _) = False
     mirror (Branch _ a b) (Branch _ c d) = mirror a d && mirror b c
+
+
+-- 57. Binary search trees (dictionaries). Use the predicate add/3, developed
+-- in chapter 4 of the course, to write a predicate to construct a binary
+-- search tree from a list of integer numbers.
+constructTree :: [Int] -> Tree Int
+constructTree = foldl insertTree Empty
+  where
+    insertTree Empty n = Branch n Empty Empty
+    insertTree (Branch m a b) n
+      | m < n    = Branch m a (insertTree b n)
+      | otherwise = Branch m (insertTree a n) b
