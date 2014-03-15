@@ -452,3 +452,19 @@ cbalTree n = [Branch 'x' b1 b2 | b1 <- t1, b2 <- t2] ++ [Branch 'x' b2 b1 | b1 <
     n2 = (n-1) - n1
     t1 = cbalTree n1
     t2 = cbalTree n2
+
+
+-- 56. Symmetric binary trees. Let us call a binary tree symmetric if you can
+-- draw a vertical line through the root node and then the right subtree is the
+-- mirror image of the left subtree. Write a predicate symmetric/1 to check
+-- whether a given binary tree is symmetric. Hint: Write a predicate mirror/2
+-- first to check whether one tree is the mirror image of another. We are only
+-- interested in the structure, not in the contents of the nodes.
+symmetric :: Tree a -> Bool
+symmetric Empty = True
+symmetric (Branch _ t1 t2) = mirror t1 t2
+  where
+    mirror Empty Empty = True
+    mirror (Branch _ _ _) Empty = False
+    mirror Empty (Branch _ _ _) = False
+    mirror (Branch _ a b) (Branch _ c d) = mirror a d && mirror b c
