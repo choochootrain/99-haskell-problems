@@ -487,3 +487,18 @@ constructTree = foldl insertTree Empty
 -- number of nodes.
 symCbalTrees :: Int -> [Tree Char]
 symCbalTrees n = filter symmetric $ cbalTree n
+
+
+-- 59. Construct height-balanced binary trees. In a height-balanced binary
+-- tree, the following property holds for every node: The height of its left
+-- subtree and the height of its right subtree are almost equal, which means
+-- their difference is not greater than one.
+hbalTree :: Char -> Int -> [Tree Char]
+hbalTree _ 0 = [Empty]
+hbalTree x 1 = [Branch x Empty Empty]
+hbalTree x n = [Branch x b1 b2 | b1 <- t1, b2 <- t1]
+            ++ [Branch x b1 b2 | b1 <- t1, b2 <- t2]
+            ++ [Branch x b1 b2 | b1 <- t2, b2 <- t1]
+  where
+    t1 = hbalTree x (n-1)
+    t2 = hbalTree x (n-2)
