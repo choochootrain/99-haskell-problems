@@ -480,3 +480,10 @@ constructTree = foldl insertTree Empty
     insertTree (Branch m a b) n
       | m < n    = Branch m a (insertTree b n)
       | otherwise = Branch m (insertTree a n) b
+
+
+-- 58. Generate-and-test paradigm. Apply the generate-and-test paradigm to
+-- construct all symmetric, completely balanced binary trees with a given
+-- number of nodes.
+symCbalTrees :: Int -> [Tree Char]
+symCbalTrees n = filter symmetric $ cbalTree n
