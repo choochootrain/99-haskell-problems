@@ -525,3 +525,10 @@ countLeaves :: Tree a -> Int
 countLeaves Empty = 0
 countLeaves (Branch _ Empty Empty) = 1
 countLeaves (Branch _ a b) = countLeaves a + countLeaves b
+
+
+-- 61A. Collect the leaves of a binary tree in a list.
+collectLeaves :: Tree a -> [a]
+collectLeaves Empty = []
+collectLeaves (Branch x Empty Empty) = [x]
+collectLeaves (Branch _ a b) = collectLeaves a ++ collectLeaves b
