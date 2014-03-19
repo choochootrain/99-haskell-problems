@@ -1,5 +1,6 @@
 import Data.List
 import Data.Ord (comparing)
+import Data.Maybe (fromJust)
 import System.Random (newStdGen, randomR, randomRs)
 import Control.Monad
 
@@ -502,3 +503,18 @@ hbalTree x n = [Branch x b1 b2 | b1 <- t1, b2 <- t1]
   where
     t1 = hbalTree x (n-1)
     t2 = hbalTree x (n-2)
+
+
+-- 60. Construct height-balanced binary trees with a given number of nodes.
+-- Consider a height-balanced binary tree of height H. What is the maximum
+-- number of nodes it can contain?
+hbalTreeNodes :: Char -> Int -> [Tree Char]
+hbalTreeNodes _ 0 = [Empty]
+hbalTreeNodes x 1 = [Branch x Empty Empty]
+hbalTreeNodes x n = filter ((==n) . count) $ concatMap (hbalTree x) [minHeight..maxHeight]
+  where
+    count Empty = 0
+    count (Branch _ a b) = 1 + count a + count b
+    minNodes = 0:1:zipWith ((+) . (1+)) minNodes (tail minNodes)
+    minHeight = ceiling $ logBase 2 $ fromIntegral (n+1)
+    maxHeight = (fromJust $ findIndex (>n) minNodes) - 1
