@@ -52,3 +52,4 @@
 60. Construct height-balanced binary trees with a given number of nodes. Consider a height-balanced binary tree of height H. What is the maximum number of nodes it can contain?
 61. Count the leaves of a binary tree.
 61A. Collect the leaves of a binary tree in a list.
+62. Collect the internal nodes of a binary tree in a list.

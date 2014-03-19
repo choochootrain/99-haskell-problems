@@ -532,3 +532,10 @@ collectLeaves :: Tree a -> [a]
 collectLeaves Empty = []
 collectLeaves (Branch x Empty Empty) = [x]
 collectLeaves (Branch _ a b) = collectLeaves a ++ collectLeaves b
+
+
+-- 62. Collect the internal nodes of a binary tree in a list.
+collectInternals :: Tree a -> [a]
+collectInternals Empty = []
+collectInternals (Branch _ Empty Empty) = []
+collectInternals (Branch x a b) = [x] ++ collectInternals a ++ collectInternals b
