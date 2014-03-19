@@ -50,3 +50,4 @@
 58. Generate-and-test paradigm. Apply the generate-and-test paradigm to construct all symmetric, completely balanced binary trees with a given number of nodes.
 59. Construct height-balanced binary trees. In a height-balanced binary tree, the following property holds for every node: The height of its left subtree and the height of its right subtree are almost equal, which means their difference is not greater than one.
 60. Construct height-balanced binary trees with a given number of nodes. Consider a height-balanced binary tree of height H. What is the maximum number of nodes it can contain?
+61. Count the leaves of a binary tree.

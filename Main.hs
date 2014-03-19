@@ -518,3 +518,10 @@ hbalTreeNodes x n = filter ((==n) . count) $ concatMap (hbalTree x) [minHeight..
     minNodes = 0:1:zipWith ((+) . (1+)) minNodes (tail minNodes)
     minHeight = ceiling $ logBase 2 $ fromIntegral (n+1)
     maxHeight = (fromJust $ findIndex (>n) minNodes) - 1
+
+
+-- 61. Count the leaves of a binary tree.
+countLeaves :: Tree a -> Int
+countLeaves Empty = 0
+countLeaves (Branch _ Empty Empty) = 1
+countLeaves (Branch _ a b) = countLeaves a + countLeaves b
