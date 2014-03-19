@@ -539,3 +539,10 @@ collectInternals :: Tree a -> [a]
 collectInternals Empty = []
 collectInternals (Branch _ Empty Empty) = []
 collectInternals (Branch x a b) = [x] ++ collectInternals a ++ collectInternals b
+
+
+-- 62B. Collect the nodes at a given level in a list.
+atLevel :: Int -> Tree a -> [a]
+atLevel _ Empty = []
+atLevel 1 (Branch x _ _) = [x]
+atLevel n (Branch _ a b) = atLevel (n-1) a ++ atLevel (n-1) b
