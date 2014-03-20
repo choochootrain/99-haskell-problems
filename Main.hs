@@ -546,3 +546,17 @@ atLevel :: Int -> Tree a -> [a]
 atLevel _ Empty = []
 atLevel 1 (Branch x _ _) = [x]
 atLevel n (Branch _ a b) = atLevel (n-1) a ++ atLevel (n-1) b
+
+
+-- 63. Construct a complete binary tree.
+completeBinaryTree :: a -> Int -> Tree a
+completeBinaryTree _ 0 = Empty
+completeBinaryTree x 1 = (Branch x Empty Empty)
+completeBinaryTree x n = completeBinaryTree' x 1 n
+  where
+    completeBinaryTree' x a n
+      | a > n     = Empty
+      | otherwise = (Branch x l r)
+        where
+          l = completeBinaryTree' x (2*a) n
+          r = completeBinaryTree' x (2*a+1) n
