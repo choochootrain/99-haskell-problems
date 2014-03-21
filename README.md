@@ -55,3 +55,4 @@
 62. Collect the internal nodes of a binary tree in a list.
 62B. Collect the nodes at a given level in a list.
 63. Construct a complete binary tree.
+64. Given a binary tree, write a function to annotate each node of the tree with a position, where (1,1) in the top left corner or the rectangle bounding the drawn tree.

@@ -560,3 +560,24 @@ completeBinaryTree x n = completeBinaryTree' x 1 n
         where
           l = completeBinaryTree' x (2*a) n
           r = completeBinaryTree' x (2*a+1) n
+
+
+-- 64. Given a binary tree, write a function to annotate each node of the tree
+-- with a position, where (1,1) in the top left corner or the rectangle
+-- bounding the drawn tree.
+layout :: Tree a -> Tree (a, (Int, Int))
+layout t = zipTreeWith combine (inorder t 1) (depth t 1)
+  where
+    zipTreeWith _ Empty Empty = Empty
+    zipTreeWith f (Branch x1 a1 b1) (Branch x2 a2 b2)
+      = (Branch (f x1 x2) (zipTreeWith f a1 a2) (zipTreeWith f b1 b2))
+    zipTreeWith f _ _ = Empty
+    combine (a, x) (b, y) = (a, (x, y))
+    depth Empty _ = Empty
+    depth (Branch x a b) h = (Branch (x, h) (depth a (h+1)) (depth b (h+1)))
+    inorder Empty _ = Empty
+    inorder (Branch x a b) n = (Branch (x, c) (inorder a n) (inorder b (c+1)))
+      where
+        c = n + inorderCount a
+        inorderCount Empty = 0
+        inorderCount (Branch _ a b) = (inorderCount a) + 1 + (inorderCount b)
