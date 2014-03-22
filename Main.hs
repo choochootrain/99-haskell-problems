@@ -581,3 +581,43 @@ layout t = zipTreeWith combine (inorder t 1) (depth t 1)
         c = n + inorderCount a
         inorderCount Empty = 0
         inorderCount (Branch _ a b) = (inorderCount a) + 1 + (inorderCount b)
+
+
+-- 65. Find out the rules and write the corresponding function. Hint: On a
+-- given level, the horizontal distance between neighboring nodes is constant.
+layout' :: Tree a -> Tree (a, (Int, Int))
+layout' t = zipTreeWith combine (width t (2^(height t - 1) - 1) (height t - 1)) (depth t 1)
+  where
+    zipTreeWith _ Empty Empty = Empty
+    zipTreeWith f (Branch x1 a1 b1) (Branch x2 a2 b2)
+      = (Branch (f x1 x2) (zipTreeWith f a1 a2) (zipTreeWith f b1 b2))
+    zipTreeWith f _ _ = Empty
+    combine (a, x) (b, y) = (a, (x, y))
+    depth Empty _ = Empty
+    depth (Branch x a b) h = (Branch (x, h) (depth a (h+1)) (depth b (h+1)))
+    width Empty _ _ = Empty
+    width (Branch x a b) n h = (Branch (x, n) (width a n1 (h-1)) (width b n2 (h-1)))
+      where
+        n1 = n - 2^(h-1)
+        n2 = n + 2^(h-1)
+    height Empty = 0
+    height (Branch _ a b) = 1 + max (height a) (height b)
+
+tree65 = Branch 'n'
+                (Branch 'k'
+                        (Branch 'c'
+                                (Branch 'a' Empty Empty)
+                                (Branch 'e'
+                                        (Branch 'd' Empty Empty)
+                                        (Branch 'g' Empty Empty)
+                                )
+                        )
+                        (Branch 'm' Empty Empty)
+                )
+                (Branch 'u'
+                        (Branch 'p'
+                                Empty
+                                (Branch 'q' Empty Empty)
+                        )
+                        Empty
+                )
