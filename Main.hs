@@ -603,21 +603,46 @@ layout' t = zipTreeWith combine (width t (2^(height t - 1) - 1) (height t - 1)) 
     height Empty = 0
     height (Branch _ a b) = 1 + max (height a) (height b)
 
-tree65 = Branch 'n'
-                (Branch 'k'
-                        (Branch 'c'
-                                (Branch 'a' Empty Empty)
-                                (Branch 'e'
-                                        (Branch 'd' Empty Empty)
-                                        (Branch 'g' Empty Empty)
-                                )
-                        )
-                        (Branch 'm' Empty Empty)
-                )
-                (Branch 'u'
-                        (Branch 'p'
-                                Empty
-                                (Branch 'q' Empty Empty)
-                        )
-                        Empty
-                )
+
+-- 66. Find out the rules and write the corresponding function. Hint: Consider
+-- the horizontal distance between a node and its successor nodes. How tight
+-- can you pack together two subtrees to construct the combined binary tree?
+layout'' :: Tree a -> Tree (a, (Int, Int))
+layout'' t = zipTreeWith combine (compact t) (depth t 1)
+  where
+    zipTreeWith _ Empty Empty = Empty
+    zipTreeWith f (Branch x1 a1 b1) (Branch x2 a2 b2)
+      = (Branch (f x1 x2) (zipTreeWith f a1 a2) (zipTreeWith f b1 b2))
+    zipTreeWith f _ _ = Empty
+    combine (a, x) (b, y) = (a, (x, y))
+    depth Empty _ = Empty
+    depth (Branch x a b) h = (Branch (x, h) (depth a (h+1)) (depth b (h+1)))
+    minValue (Branch (_, n) Empty Empty) = n
+    minValue (Branch (_, n) a _) = minValue a
+    mapTree f Empty = Empty
+    mapTree f (Branch (x, n) a b) = (Branch (x, f n) (mapTree f a) (mapTree f b))
+    aggregate Empty = Empty
+    aggregate (Branch (x, n) a b) = (Branch (x, 0) aa ab)
+      where
+        w = (n+1) `div` 2
+        aa = mapTree (\x -> x - w) $ aggregate a
+        ab = mapTree (+w) $ aggregate b
+    compactWidth Empty = Empty
+    compactWidth (Branch x Empty Empty) = (Branch (x, 0) Empty Empty)
+    compactWidth (Branch x a b)
+      | leaf a || leaf b = (Branch (x, 1) (compactWidth a) (compactWidth b))
+      | otherwise        = (Branch (x, n) (compactWidth a) (compactWidth b))
+        where
+          leaf (Branch _ Empty Empty) = True
+          leaf _ = False
+          n = max (maxRightWidth a + maxLeftWidth b) 1
+          maxRightWidth Empty = 0
+          maxRightWidth (Branch _ Empty Empty) = 0
+          maxRightWidth (Branch _ a b) = max (maxRightWidth a - 1) (maxRightWidth b + 1)
+          maxLeftWidth Empty = 0
+          maxLeftWidth (Branch _ Empty Empty) = 0
+          maxLeftWidth (Branch _ a b) = max (maxLeftWidth a + 1) (maxLeftWidth b - 1)
+    compact t = mapTree (+(-m+1)) at
+      where
+        at = aggregate $ compactWidth t
+        m = minValue at
