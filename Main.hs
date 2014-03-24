@@ -3,6 +3,8 @@ import Data.Ord (comparing)
 import Data.Maybe (fromJust)
 import System.Random (newStdGen, randomR, randomRs)
 import Control.Monad
+import Text.ParserCombinators.Parsec
+import Text.ParserCombinators.Parsec.Token
 
 
 -- 1. Find the last element of a list.
@@ -646,3 +648,41 @@ layout'' t = zipTreeWith combine (compact t) (depth t 1)
       where
         at = aggregate $ compactWidth t
         m = minValue at
+
+
+-- 67A. Write a predicate which generates this string representation, if the
+-- tree is given as usual (as nil or t(X,L,R) term). Then write a predicate
+-- which does this inverse; i.e. given the string representation, construct
+-- the tree in the usual form.
+treeToString :: Tree Char -> [Char]
+treeToString Empty = ""
+treeToString (Branch x a b) = x : "(" ++ tsa ++ "," ++ tsb ++ ")"
+  where
+    tsa = treeToString a
+    tsb = treeToString b
+stringToTree :: [Char] -> Tree Char
+stringToTree s = case parse parseTree "" s of
+  Left err -> Empty
+  Right val -> val
+  where
+    parseTree :: Parser (Tree Char)
+    parseTree = do
+                  x <- try parseNode <|> parseLeaf
+                  return x
+            <|> parseEmpty
+    parseEmpty :: Parser (Tree Char)
+    parseEmpty = do
+      return Empty
+    parseLeaf :: Parser (Tree Char)
+    parseLeaf = do
+      x <- letter
+      return $ (Branch x Empty Empty)
+    parseNode :: Parser (Tree Char)
+    parseNode = do
+      x <- letter
+      char '('
+      a <- parseTree
+      char ','
+      b <- parseTree
+      char ')'
+      return $ (Branch x a b)

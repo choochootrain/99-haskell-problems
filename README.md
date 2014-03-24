@@ -58,3 +58,4 @@
 64. Given a binary tree, write a function to annotate each node of the tree with a position, where (1,1) in the top left corner or the rectangle bounding the drawn tree.
 65. Find out the rules and write the corresponding function. Hint: On a given level, the horizontal distance between neighboring nodes is constant.
 66. Find out the rules and write the corresponding function. Hint: Consider the horizontal distance between a node and its successor nodes. How tight can you pack together two subtrees to construct the combined binary tree?
+67A. Write a predicate which generates this string representation, if the tree is given as usual (as nil or t(X,L,R) term). Then write a predicate which does this inverse; i.e. given the string representation, construct the tree in the usual form.
