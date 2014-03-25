@@ -686,3 +686,31 @@ stringToTree s = case parse parseTree "" s of
       b <- parseTree
       char ')'
       return $ (Branch x a b)
+
+
+-- 68. Write predicates preorder/2 and inorder/2 that construct the preorder
+-- and inorder sequence of a given binary tree, respectively. Can you use
+-- preorder/2 from problem part a) in the reverse direction; i.e. given a
+-- preorder sequence, construct a corresponding tree? If not, make the
+-- necessary arrangements. If both the preorder sequence and the inorder
+-- sequence of the nodes of a binary tree are given, then the tree is
+-- determined unambiguously. Write a predicate pre_in_tree/3 that does the job.
+preorder :: Tree Char -> [Char]
+preorder Empty = ""
+preorder (Branch x a b) = [x] ++ (preorder a) ++ (preorder b)
+inorder :: Tree Char -> [Char]
+inorder Empty = ""
+inorder (Branch x a b) = (inorder a) ++ [x] ++ (inorder b)
+preorderToTree :: Tree Char -> Tree Char
+preorderToTree t = stringToTree $ preorder' t
+  where
+    preorder' = treeToString -- minor modification
+preInTree :: [Char] -> [Char] -> Tree Char
+preInTree "" "" = Empty
+preInTree po io = (Branch root (preInTree pl il) (preInTree pr ir))
+  where
+    root = head po
+    il = takeWhile (/=root) io
+    ir = tail $ dropWhile (/=root) io
+    pl = take (length il) $ tail po
+    pr = drop (length il) $ tail po
