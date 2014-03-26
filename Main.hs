@@ -714,3 +714,37 @@ preInTree po io = (Branch root (preInTree pl il) (preInTree pr ir))
     ir = tail $ dropWhile (/=root) io
     pl = take (length il) $ tail po
     pr = drop (length il) $ tail po
+
+
+-- 69. Dotstring representation of binary trees. We consider again binary trees
+-- with nodes that are identified by single lower-case letters, as in the
+-- example of problem P67. Such a tree can be represented by the preorder
+-- sequence of its nodes in which dots (.) are inserted where an empty subtree
+-- (nil) is encountered during the tree traversal. For example, the tree shown
+-- in problem P67 is represented as 'abd..e..c.fg...'. First, try to establish
+-- a syntax (BNF or syntax diagrams) and then write a predicate
+-- tree_dotstring/2 which does the conversion in both directions.
+treeToDotstring :: Tree Char -> [Char]
+treeToDotstring Empty = "."
+treeToDotstring (Branch x a b) = x : tsa ++ tsb
+  where
+    tsa = treeToDotstring a
+    tsb = treeToDotstring b
+dotstringToTree :: [Char] -> Tree Char
+dotstringToTree s = case parse parseTree "" s of
+  Left err -> Empty
+  Right val -> val
+  where
+    parseTree :: Parser (Tree Char)
+    parseTree = parseNode
+            <|> parseEmpty
+    parseEmpty :: Parser (Tree Char)
+    parseEmpty = do
+      char '.'
+      return Empty
+    parseNode :: Parser (Tree Char)
+    parseNode = do
+      x <- alphaNum
+      a <- parseTree
+      b <- parseTree
+      return $ (Branch x a b)
