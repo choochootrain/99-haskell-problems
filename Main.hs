@@ -748,3 +748,10 @@ dotstringToTree s = case parse parseTree "" s of
       a <- parseTree
       b <- parseTree
       return $ (Branch x a b)
+
+
+-- 70C. Count the nodes of a multiway tree.
+data MTree a = Node a [MTree a]
+               deriving (Eq, Show)
+nnodes :: MTree a -> Int
+nnodes (Node _ x) = 1 + (foldr (+) 0 $ map nnodes x)
