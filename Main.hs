@@ -755,3 +755,21 @@ data MTree a = Node a [MTree a]
                deriving (Eq, Show)
 nnodes :: MTree a -> Int
 nnodes (Node _ x) = 1 + (foldr (+) 0 $ map nnodes x)
+
+
+-- 70. Define the syntax of the string and write a predicate tree(String,Tree)
+-- to construct the Tree when the String is given. Make your predicate work in
+-- both directions.
+mtreeToString :: MTree Char -> [Char]
+mtreeToString (Node x n) = x : (foldr (++) "" $ map mtreeToString n) ++ "^"
+stringToMtree :: [Char] -> MTree Char
+stringToMtree s = case parse parseMtree "" s of
+  Left _ -> Node ' ' []
+  Right val -> val
+  where
+    parseMtree :: Parser (MTree Char)
+    parseMtree = do
+      x <- alphaNum
+      n <- many parseMtree
+      char '^'
+      return $ (Node x n)
