@@ -788,3 +788,36 @@ ipl (Node _ n)
 -- 72. Construct the bottom-up order sequence of the tree nodes.
 bottomUp :: MTree Char -> [Char]
 bottomUp (Node x n) = (foldr (++) "" $ map bottomUp n) ++ [x]
+
+
+-- 73. Lisp-like tree representation. Write a predicate tree_ltl(T,LTL) which
+-- constructs the "lispy token list" LTL if the tree is given as term T in the
+-- usual Prolog notation. As a second, even more interesting exercise try to
+-- rewrite tree_ltl/2 in a way that the inverse conversion is also possible.
+mtreeToLstring :: MTree Char -> [Char]
+mtreeToLstring (Node x []) = [x]
+mtreeToLstring (Node x n) = "(" ++ [x] ++ " " ++ children ++ ")"
+  where
+    children = init $ foldr (++) "" $ map ((++" ") . mtreeToLstring) n
+lstringToMtree :: [Char] -> MTree Char
+lstringToMtree s = case parse parseMtree "" s of
+  Left _ -> Node ' ' []
+  Right val -> val
+  where
+    parseMtree :: Parser (MTree Char)
+    parseMtree = do
+                  x <- try parseNode <|> parseLeaf
+                  optionMaybe $ char ' '
+                  return x
+    parseLeaf :: Parser (MTree Char)
+    parseLeaf = do
+      x <- letter
+      return $ (Node x [])
+    parseNode :: Parser (MTree Char)
+    parseNode = do
+      char '('
+      x <- letter
+      char ' '
+      n <- many parseMtree
+      char ')'
+      return $ (Node x n)
