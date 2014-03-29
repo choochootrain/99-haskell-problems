@@ -64,3 +64,4 @@
 70C. Count the nodes of a multiway tree.
 70. Define the syntax of the string and write a predicate tree(String,Tree) to construct the Tree when the String is given. Make your predicate work in both directions.
 71. Determine the internal path length of a tree. We define the internal path length of a multiway tree as the total sum of the path lengths from the root to all nodes of the tree. By this definition, tree5 has an internal path length of 9.
+72. Construct the bottom-up order sequence of the tree nodes.

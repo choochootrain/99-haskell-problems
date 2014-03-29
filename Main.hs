@@ -783,3 +783,8 @@ ipl :: MTree a -> Int
 ipl (Node _ n)
   | length n == 0 = 0
   | otherwise     = sum $ map (\t -> ipl t + nnodes t) n
+
+
+-- 72. Construct the bottom-up order sequence of the tree nodes.
+bottomUp :: MTree Char -> [Char]
+bottomUp (Node x n) = (foldr (++) "" $ map bottomUp n) ++ [x]
