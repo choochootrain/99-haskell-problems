@@ -821,3 +821,56 @@ lstringToMtree s = case parse parseMtree "" s of
       n <- many parseMtree
       char ')'
       return $ (Node x n)
+
+
+-- 80. Write predicates to convert between the different graph representations.
+-- With these predicates, all representations are equivalent; i.e. for the
+-- following problems you can always pick freely the most convenient form.
+data EdgeClause a = EdgeClause [(a, a)] deriving (Eq, Show)
+data GraphTerm a = GraphTerm [a] [(a, a)] deriving (Eq, Show)
+data AdjacencyList a = AdjacencyList [(a, [a])] deriving (Eq, Show)
+data HumanFriendly a = HumanFriendly [Entry a] deriving (Eq, Show)
+data Entry a = Edge a a | Atom a deriving (Eq, Show)
+ecToGt :: (Eq a) => EdgeClause a -> GraphTerm a
+ecToGt (EdgeClause e) = GraphTerm n e
+  where n = nub $ foldr (++) [] $ map (\(a,b) -> [a, b]) e
+ecToAl :: (Eq a) => EdgeClause a -> AdjacencyList a
+ecToAl (EdgeClause e) = AdjacencyList $ map (collectAdjacent e) n
+  where
+    n = nub $ foldr (++) [] $ map (\(a,b) -> [a,b]) e
+    collectAdjacent :: (Eq a) => [(a,a)] -> a -> (a, [a])
+    collectAdjacent e x = (x, concat $ map (getAdjacent x) $ filter (hasNode x) e)
+      where
+        hasNode x (a, b) = x == a || x == b
+        getAdjacent x (a, b) = if x == a
+                                 then [b]
+                                 else [a]
+ecToHf :: (Eq a) => EdgeClause a -> HumanFriendly a
+ecToHf x = HumanFriendly $ adjToHuman $ ecToAl x
+  where
+    adjToHuman (AdjacencyList l) = concatMap adjToEntries l
+    adjToEntries (n, []) = [Atom n]
+    adjToEntries (n, e) = map (\x -> Edge n x) e
+gtToEc :: GraphTerm a -> EdgeClause a
+gtToEc (GraphTerm n e) = EdgeClause e
+gtToAl :: (Eq a) => GraphTerm a -> AdjacencyList a
+gtToAl = ecToAl . gtToEc
+gtToHf :: (Eq a) => GraphTerm a -> HumanFriendly a
+gtToHf = ecToHf . gtToEc
+alToEc :: (Eq a) => AdjacencyList a -> EdgeClause a
+alToEc (AdjacencyList l) = EdgeClause $ concatMap getEdges l
+  where
+    getEdges (n, e) = zip (repeat n) e
+alToGt :: (Eq a) => AdjacencyList a -> GraphTerm a
+alToGt = ecToGt . alToEc
+alToHf :: (Eq a) => AdjacencyList a -> HumanFriendly a
+alToHf = ecToHf . alToEc
+hfToEc :: HumanFriendly a -> EdgeClause a
+hfToEc (HumanFriendly h) = EdgeClause $ concatMap makeEdge h
+  where
+    makeEdge (Atom a) = []
+    makeEdge (Edge a b) = [(a, b)]
+hfToGt :: (Eq a) => HumanFriendly a -> GraphTerm a
+hfToGt = ecToGt . hfToEc
+hfToAl :: (Eq a) => HumanFriendly a -> AdjacencyList a
+hfToAl = ecToAl . hfToEc

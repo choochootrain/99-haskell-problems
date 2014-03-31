@@ -66,3 +66,4 @@
 71. Determine the internal path length of a tree. We define the internal path length of a multiway tree as the total sum of the path lengths from the root to all nodes of the tree. By this definition, tree5 has an internal path length of 9.
 72. Construct the bottom-up order sequence of the tree nodes.
 73. Lisp-like tree representation. Write a predicate tree_ltl(T,LTL) which constructs the "lispy token list" LTL if the tree is given as term T in the usual Prolog notation. As a second, even more interesting exercise try to rewrite tree_ltl/2 in a way that the inverse conversion is also possible.
+80. Write predicates to convert between the different graph representations. With these predicates, all representations are equivalent; i.e. for the following problems you can always pick freely the most convenient form.
