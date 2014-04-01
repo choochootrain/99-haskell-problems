@@ -874,3 +874,18 @@ hfToGt :: (Eq a) => HumanFriendly a -> GraphTerm a
 hfToGt = ecToGt . hfToEc
 hfToAl :: (Eq a) => HumanFriendly a -> AdjacencyList a
 hfToAl = ecToAl . hfToEc
+
+
+-- 81. Path from one node to another one. Write a function that, given two
+-- nodes a and b in a graph, returns all the acyclic paths from a to b.
+paths :: (Eq a) => a -> a -> GraphTerm a -> [[a]]
+paths u v (GraphTerm n e)
+  | u `elem` n && v `elem` n && u /= v = findPath u v e
+  | u `elem` n && v `elem` n && u == v = [[u]]
+  | otherwise                          = []
+  where
+    findPath u v e = map (([u]++)) $ filter ((>0) . length) subPaths
+      where
+        neighbors = map (\(a,b) -> b) $ filter (\(a,b) -> a == u) e
+        subPaths = concatMap (\x -> paths x v (GraphTerm n (removeNode u e))) neighbors
+        removeNode u e = filter (\(a, b) -> a /= u && b /= u) e
