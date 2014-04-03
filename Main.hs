@@ -889,3 +889,17 @@ paths u v (GraphTerm n e)
         neighbors = map (\(a,b) -> b) $ filter (\(a,b) -> a == u) e
         subPaths = concatMap (\x -> paths x v (GraphTerm n (removeNode u e))) neighbors
         removeNode u e = filter (\(a, b) -> a /= u && b /= u) e
+
+-- 82. Cycle from a given node. Write a predicate cycle(G,A,P) to find a closed
+-- path (cycle) P starting at a given node A in the graph G. The predicate
+-- should return all cycles via backtracking.
+cycles :: (Eq a) => a -> GraphTerm a -> [[a]]
+cycles u (GraphTerm n e)
+  | u `elem` n = findCycle u e
+  | otherwise  = []
+  where
+    findCycle u e = map ([u]++) $ filter ((>0) . length) subPaths
+      where
+        subPaths = concatMap (\x -> paths x u (GraphTerm n (removeEdge x u e))) neighbors
+        neighbors = map (\(a,b) -> b) $ filter (\(a,b) -> a == u) e
+        removeEdge x y = filter (\(a,b) -> a /= x || b /= y)

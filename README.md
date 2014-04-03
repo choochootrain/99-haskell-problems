@@ -68,3 +68,4 @@
 73. Lisp-like tree representation. Write a predicate tree_ltl(T,LTL) which constructs the "lispy token list" LTL if the tree is given as term T in the usual Prolog notation. As a second, even more interesting exercise try to rewrite tree_ltl/2 in a way that the inverse conversion is also possible.
 80. Write predicates to convert between the different graph representations. With these predicates, all representations are equivalent; i.e. for the following problems you can always pick freely the most convenient form.
 81. Path from one node to another one. Write a function that, given two nodes a and b in a graph, returns all the acyclic paths from a to b.
+82. Cycle from a given node. Write a predicate cycle(G,A,P) to find a closed path (cycle) P starting at a given node A in the graph G. The predicate should return all cycles via backtracking.
