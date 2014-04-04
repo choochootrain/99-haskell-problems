@@ -903,3 +903,28 @@ cycles u (GraphTerm n e)
         subPaths = concatMap (\x -> paths x u (GraphTerm n (removeEdge x u e))) neighbors
         neighbors = map (\(a,b) -> b) $ filter (\(a,b) -> a == u) e
         removeEdge x y = filter (\(a,b) -> a /= x || b /= y)
+
+
+-- 83. Construct all spanning trees. Write a predicate s_tree(Graph,Tree) to
+-- construct (by backtracking) all spanning trees of a given graph. With this
+-- predicate, find out how many spanning trees there are for the graph depicted
+-- to the left. The data of this example graph can be found in the file p83.dat.
+-- When you have a correct solution for the s_tree/2 predicate, use it to
+-- define two other useful predicates: is_tree(Graph) and is_connected(Graph).
+spanningTrees :: (Ord a) => GraphTerm a -> [[(a,a)]]
+spanningTrees (GraphTerm n e) = filter ((==(length n - 1)) . length) $ spanningTrees' n e []
+  where
+    spanningTrees' n e s
+      | length n == 0 = [[]]
+      | length e == 0 = [[]]
+      | length e == length n - 1 = [e]
+      | otherwise = nub $ map sort $ concatMap (\x -> sort $ addEdge x $ subSpanningTrees n e x) e
+      where
+        addEdge x = map (++[x])
+        subSpanningTrees n e x = if length remainingNodes < length n
+                                  then spanningTrees' remainingNodes remainingEdges spanningNodes
+                                  else []
+          where
+            remainingNodes = filter (\y -> y /= (fst x) &&  y /= (snd x)) n
+            remainingEdges = filter (\(a,b) -> a `elem` remainingNodes || b `elem` remainingNodes) e
+            spanningNodes = filter (\x -> not $ x `elem` remainingNodes) n
